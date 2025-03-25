@@ -2,18 +2,15 @@ import assets from "../../assets/assets";
 
 export default function Footer() {
   return (
-    <footer className="flex justify-between items-center py-4  bg-white border-t border-gray-200 px-[110px]">
-      {/* Left Section: Logo & Text */}
-      <div className="flex items-center space-x-4">
-        <img src={assets.logo} alt="Edemy Logo" className="w-30 " />
-        
+    <footer className="flex flex-col sm:flex-row justify-between items-center py-4 bg-white border-t border-gray-200 px-4 sm:px-8 lg:px-20">
+      <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+        <img src={assets.logo} alt="Edemy Logo" className="w-24" />
         <div className="h-6 border-l border-gray-400"></div>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 text-sm text-center sm:text-left">
           All rights reserved. Copyright ©Edemy
         </p>
       </div>
 
-      {/* Right Section: Social Icons */}
       <div className="flex space-x-3">
         <img
           src={assets.facebook_icon}

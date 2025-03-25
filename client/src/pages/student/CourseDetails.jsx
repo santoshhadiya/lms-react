@@ -43,32 +43,32 @@ const CourseDetails = () => {
   if (!courseData) {
     return <Loading />;
   }
+
   const toggleChapter = (chapterId) => {
     setExpandedChapters((prev) => ({
       ...prev,
-      [chapterId]: !prev[chapterId], // Toggle the state for the clicked chapter
+      [chapterId]: !prev[chapterId],
     }));
   };
 
   return (
     <>
-      <div className="px-[110px] py-10 w-full bg-gradient-to-b from-cyan-100/70">
-        <div className="max-w-6xl mx-auto flex gap-30">
-          
+      <div className="px-6 md:px-10 lg:px-[110px] py-10 w-full bg-gradient-to-b from-cyan-100/70">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10">
           {/* Left */}
-          <div className=" w-[55%]">
-            <h1 className="text-3xl font-bold mb-4">
+          <div className="w-full lg:w-[55%]">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">
               {courseData.courseTitle}
             </h1>
 
             <p
-              className="text-gray-600 mb-4"
+              className="text-gray-600 mb-4 text-sm md:text-base"
               dangerouslySetInnerHTML={{
                 __html: courseData.courseDescription.slice(0, 200),
               }}
             ></p>
-            {/* Course Info (ratings,lacturs,duration) */}
-            <div className="flex items-center mb-4">
+            {/* Course Info */}
+            <div className="flex flex-wrap items-center mb-4 text-sm">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <img
@@ -79,7 +79,7 @@ const CourseDetails = () => {
                         : assets.star_blank
                     }
                     alt="star"
-                    className="w-5 h-5"
+                    className="w-4 h-4 md:w-5 md:h-5"
                   />
                 ))}
               </div>
@@ -95,75 +95,46 @@ const CourseDetails = () => {
             </div>
 
             {/* Course Structure */}
-            <div className=" rounded-lg ">
-              <h2 className="text-xl font-bold mb-4">Course Structure</h2>
+            <div className="rounded-lg">
+              <h2 className="text-lg md:text-xl font-bold mb-4">Course Structure</h2>
               {courseData.courseContent.map((chapter, index) => (
                 <div
                   key={index}
-                  className="mb-4 border border-gray-300 rounded"
+                  className="mb-4 border border-gray-300 rounded overflow-hidden"
                 >
                   <div
-                    className="flex justify-between items-center p-4 bg-gray-50 rounded border-b border-gray-300 cursor-pointer"
+                    className="flex justify-between items-center p-4 bg-gray-50 cursor-pointer"
                     onClick={() => toggleChapter(chapter.chapterId)}
                   >
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                       <img
                         src={
                           expandedChapters[chapter.chapterId]
-                            ? "https://icons.veryicon.com/png/o/miscellaneous/unionpay-digital-marketing/up-arrow-thin.png" // Use up arrow when expanded
-                            : assets.down_arrow_icon // Use down arrow when collapsed
+                            ? "https://icons.veryicon.com/png/o/miscellaneous/unionpay-digital-marketing/up-arrow-thin.png"
+                            : assets.down_arrow_icon
                         }
                         alt="arrow"
                         className="w-4 h-4 mr-2"
                       />
-                      <span className="font-medium">
-                        {chapter.chapterTitle}
-                      </span>
+                      <span className="font-medium">{chapter.chapterTitle}</span>
                     </div>
                     <span className="text-gray-500">
-                      {chapter.chapterContent.length} lectures -{" "}
-                      {calculateChapterTime(chapter)}
+                      {chapter.chapterContent.length} lectures - {calculateChapterTime(chapter)}
                     </span>
                   </div>
                   {expandedChapters[chapter.chapterId] && (
-                    <div className="pt-2 pl-8 px-5 bg-white">
+                    <div className="pt-2 pl-4 px-3 bg-white">
                       {chapter.chapterContent.map((lecture, idx) => (
-                        <div
-                          key={idx}
-                          className="flex justify-between items-center py-2"
-                        >
+                        <div key={idx} className="flex justify-between items-center py-2">
                           <div className="flex items-center">
-                            <img
-                              src={assets.play_icon}
-                              alt="play"
-                              className="w-4 h-4 mr-2"
-                            />
-                            <span>{lecture.lectureTitle}</span>
+                            <img src={assets.play_icon} alt="play" className="w-4 h-4 mr-2" />
+                            <span className="text-sm md:text-base">{lecture.lectureTitle}</span>
                           </div>
-                          <div className="flex items-center">
-                            {lecture.isPreviewFree && (
-                              <span
-                                className="text-blue-500 mr-4 cursor-pointer"
-                                onClick={() =>
-                                  setPlayerData({
-                                    videoId: lecture.lectureUrl
-                                      .split("/")
-                                      .pop(),
-                                  })
-                                }
-                              >
-                                Preview
-                              </span>
-                            )}
-                            <span className="text-gray-500">
-                              {humanizeDuration(
-                                lecture.lectureDuration * 60 * 1000,
-                                {
-                                  units: ["h", "m"],
-                                }
-                              )}
-                            </span>
-                          </div>
+                          <span className="text-gray-500 text-sm">
+                            {humanizeDuration(lecture.lectureDuration * 60 * 1000, {
+                              units: ["h", "m"],
+                            })}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -171,7 +142,6 @@ const CourseDetails = () => {
                 </div>
               ))}
             </div>
-
             <h2 className="text-xl font-bold mb-4">Course Description</h2>
             <p
               className="text-gray-600 mb-4"
@@ -181,7 +151,8 @@ const CourseDetails = () => {
             ></p>
           </div>
 
-          <section className="max-w-md mx-auto bg-white rounded shadow-lg overflow-hidden w-[32%] h-fit">
+          {/* Right Section */}
+          <section className="max-w-md mx-auto bg-white rounded shadow-lg overflow-hidden w-[100%] h-fit">
             {/* Thumbnail */}
             <div className="relative">
               {playerData ? (
